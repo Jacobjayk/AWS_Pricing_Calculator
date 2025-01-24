@@ -1,0 +1,40 @@
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+#resultSection {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.cost-detail-row {
+    padding: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.cost-detail-row:last-child {
+    border-bottom: none;
+}
+
+.error-message {
+    color: #dc3545;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    border: 1px solid #dc3545;
+    border-radius: 0.25rem;
+    background-color: #f8d7da;
+} 

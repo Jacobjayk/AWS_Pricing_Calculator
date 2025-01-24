@@ -1,0 +1,32 @@
+cloud-cost-calculator/
+├── app/
+│   ├── __init__.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   └── calculator_routes.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── aws_price_service.py
+│   │   └── calculator_service.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   └── pricing_models.py
+│   └── utils/
+│       ├── __init__.py
+│       └── aws_helpers.py
+├── config/
+│   └── config.py
+├── static/
+│   ├── css/
+│   │   └── styles.css
+│   └── js/
+│       └── calculator.js
+├── templates/
+│   ├── base.html
+│   └── calculator.html
+├── tests/
+│   └── test_calculator.py
+├── .env.example
+├── .gitignore
+├── requirements.txt
+└── run.py 

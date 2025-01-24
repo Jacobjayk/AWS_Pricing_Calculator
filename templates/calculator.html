@@ -1,0 +1,734 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Cost Calculator</h3>
+            </div>
+            <div class="card-body">
+                <form id="calculatorForm">
+                    <div class="mb-3">
+                        <label for="service" class="form-label">AWS Service</label>
+                        <select class="form-select" id="service" name="service" required>
+                            <option value="">Select a service</option>
+                            <option value="apigateway">API Gateway</option>
+                            <option value="aurora">Aurora</option>
+                            <option value="cloudfront">CloudFront</option>
+                            <option value="dynamodb">DynamoDB</option>
+                            <option value="ebs">EBS Volumes</option>
+                            <option value="ec2">EC2</option>
+                            <option value="ecr">ECR (Container Registry)</option>
+                            <option value="ecs">ECS (Container Service)</option>
+                            <option value="eks">EKS (Kubernetes)</option>
+                            <option value="elasticache">ElastiCache</option>
+                            <option value="elasticbeanstalk">Elastic Beanstalk</option>
+                            <option value="elb">Elastic Load Balancer</option>
+                            <option value="lambda">Lambda</option>
+                            <option value="rds">RDS</option>
+                            <option value="redshift">Redshift</option>
+                            <option value="route53">Route 53</option>
+                            <option value="s3">S3</option>
+                            <option value="sns">SNS</option>
+                            <option value="sqs">SQS</option>
+                            <option value="vpc">VPC</option>
+                        </select>
+                    </div>
+
+                    <!-- EC2 Options -->
+                    <div id="ec2Options" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="instanceType" class="form-label">Instance Type</label>
+                            <select class="form-select" id="instanceType" name="instanceType">
+                                <optgroup label="General Purpose">
+                                    <option value="t2.nano">t2.nano (2 vCPU, 0.5 GiB)</option>
+                                    <option value="t2.micro">t2.micro (2 vCPU, 1 GiB)</option>
+                                    <option value="t2.small">t2.small (2 vCPU, 2 GiB)</option>
+                                    <option value="t2.medium">t2.medium (2 vCPU, 4 GiB)</option>
+                                    <option value="t3.nano">t3.nano (2 vCPU, 0.5 GiB)</option>
+                                    <option value="t3.micro">t3.micro (2 vCPU, 1 GiB)</option>
+                                    <option value="t3.small">t3.small (2 vCPU, 2 GiB)</option>
+                                    <option value="t3.medium">t3.medium (2 vCPU, 4 GiB)</option>
+                                    <option value="m5.large">m5.large (2 vCPU, 8 GiB)</option>
+                                    <option value="m5.xlarge">m5.xlarge (4 vCPU, 16 GiB)</option>
+                                    <option value="m5.2xlarge">m5.2xlarge (8 vCPU, 32 GiB)</option>
+                                    <option value="m5.4xlarge">m5.4xlarge (16 vCPU, 64 GiB)</option>
+                                </optgroup>
+                                <optgroup label="Compute Optimized">
+                                    <option value="c5.large">c5.large (2 vCPU, 4 GiB)</option>
+                                    <option value="c5.xlarge">c5.xlarge (4 vCPU, 8 GiB)</option>
+                                    <option value="c5.2xlarge">c5.2xlarge (8 vCPU, 16 GiB)</option>
+                                    <option value="c5.4xlarge">c5.4xlarge (16 vCPU, 32 GiB)</option>
+                                </optgroup>
+                                <optgroup label="Memory Optimized">
+                                    <option value="r5.large">r5.large (2 vCPU, 16 GiB)</option>
+                                    <option value="r5.xlarge">r5.xlarge (4 vCPU, 32 GiB)</option>
+                                    <option value="r5.2xlarge">r5.2xlarge (8 vCPU, 64 GiB)</option>
+                                    <option value="r5.4xlarge">r5.4xlarge (16 vCPU, 128 GiB)</option>
+                                    <option value="x1.16xlarge">x1.16xlarge (64 vCPU, 976 GiB)</option>
+                                    <option value="x1.32xlarge">x1.32xlarge (128 vCPU, 1,952 GiB)</option>
+                                </optgroup>
+                                <optgroup label="Storage Optimized">
+                                    <option value="i3.large">i3.large (2 vCPU, 15.25 GiB)</option>
+                                    <option value="i3.xlarge">i3.xlarge (4 vCPU, 30.5 GiB)</option>
+                                    <option value="i3.2xlarge">i3.2xlarge (8 vCPU, 61 GiB)</option>
+                                    <option value="d2.xlarge">d2.xlarge (4 vCPU, 30.5 GiB)</option>
+                                    <option value="d2.2xlarge">d2.2xlarge (8 vCPU, 61 GiB)</option>
+                                    <option value="d2.4xlarge">d2.4xlarge (16 vCPU, 122 GiB)</option>
+                                </optgroup>
+                                <optgroup label="GPU Instances">
+                                    <option value="p3.2xlarge">p3.2xlarge (8 vCPU, 61 GiB, 1 GPU)</option>
+                                    <option value="p3.8xlarge">p3.8xlarge (32 vCPU, 244 GiB, 4 GPU)</option>
+                                    <option value="p3.16xlarge">p3.16xlarge (64 vCPU, 488 GiB, 8 GPU)</option>
+                                    <option value="g4dn.xlarge">g4dn.xlarge (4 vCPU, 16 GiB, 1 GPU)</option>
+                                    <option value="g4dn.2xlarge">g4dn.2xlarge (8 vCPU, 32 GiB, 1 GPU)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="hours" class="form-label">Hours per Month</label>
+                            <input type="number" class="form-control" id="hours" name="hours" min="1" max="744" value="730">
+                            <small class="form-text text-muted">730 hours = 1 month of continuous usage</small>
+                        </div>
+                    </div>
+
+                    <!-- S3 Options -->
+                    <div id="s3Options" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="storage" class="form-label">Storage (GB)</label>
+                            <input type="number" class="form-control" id="storage" name="storage" min="0">
+                            <small class="form-text text-muted">Enter the total storage needed</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="storageClass" class="form-label">Storage Class</label>
+                            <select class="form-select" id="storageClass" name="storageClass">
+                                <option value="standard">Standard ($0.023 per GB)</option>
+                                <option value="intelligent_tiering">Intelligent-Tiering ($0.0125 per GB)</option>
+                                <option value="standard_ia">Standard-IA ($0.0125 per GB)</option>
+                                <option value="one_zone_ia">One Zone-IA ($0.01 per GB)</option>
+                                <option value="glacier">Glacier ($0.004 per GB)</option>
+                                <option value="glacier_deep_archive">Glacier Deep Archive ($0.00099 per GB)</option>
+                                <option value="glacier_instant_retrieval">Glacier Instant Retrieval ($0.01 per GB)</option>
+                            </select>
+                            <small class="form-text text-muted">Choose storage class based on access patterns</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="requestsGET" class="form-label">Monthly GET Requests (thousands)</label>
+                            <input type="number" class="form-control" id="requestsGET" name="requestsGET" min="0" step="1">
+                            <small class="form-text text-muted">$0.0004 per 1,000 GET requests</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="requestsPUT" class="form-label">Monthly PUT Requests (thousands)</label>
+                            <input type="number" class="form-control" id="requestsPUT" name="requestsPUT" min="0" step="1">
+                            <small class="form-text text-muted">$0.005 per 1,000 PUT requests</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dataTransfer" class="form-label">Monthly Data Transfer Out (GB)</label>
+                            <input type="number" class="form-control" id="dataTransfer" name="dataTransfer" min="0">
+                            <small class="form-text text-muted">Data transfer pricing varies by region and volume</small>
+                        </div>
+                    </div>
+
+                    <!-- RDS Options -->
+                    <div id="rdsOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="dbInstanceType" class="form-label">DB Instance Type</label>
+                            <select class="form-select" id="dbInstanceType" name="dbInstanceType">
+                                <optgroup label="Burstable Performance">
+                                    <option value="db.t3.micro">db.t3.micro (2 vCPU, 1 GiB) - $0.017/hr</option>
+                                    <option value="db.t3.small">db.t3.small (2 vCPU, 2 GiB) - $0.034/hr</option>
+                                    <option value="db.t3.medium">db.t3.medium (2 vCPU, 4 GiB) - $0.068/hr</option>
+                                    <option value="db.t3.large">db.t3.large (2 vCPU, 8 GiB) - $0.136/hr</option>
+                                    <option value="db.t3.xlarge">db.t3.xlarge (4 vCPU, 16 GiB) - $0.272/hr</option>
+                                    <option value="db.t3.2xlarge">db.t3.2xlarge (8 vCPU, 32 GiB) - $0.544/hr</option>
+                                </optgroup>
+                                <optgroup label="Memory Optimized">
+                                    <option value="db.r5.large">db.r5.large (2 vCPU, 16 GiB) - $0.29/hr</option>
+                                    <option value="db.r5.xlarge">db.r5.xlarge (4 vCPU, 32 GiB) - $0.58/hr</option>
+                                    <option value="db.r5.2xlarge">db.r5.2xlarge (8 vCPU, 64 GiB) - $1.16/hr</option>
+                                    <option value="db.r5.4xlarge">db.r5.4xlarge (16 vCPU, 128 GiB) - $2.32/hr</option>
+                                    <option value="db.r5.8xlarge">db.r5.8xlarge (32 vCPU, 256 GiB) - $4.64/hr</option>
+                                    <option value="db.r5.12xlarge">db.r5.12xlarge (48 vCPU, 384 GiB) - $6.96/hr</option>
+                                    <option value="db.r5.16xlarge">db.r5.16xlarge (64 vCPU, 512 GiB) - $9.28/hr</option>
+                                    <option value="db.r5.24xlarge">db.r5.24xlarge (96 vCPU, 768 GiB) - $13.92/hr</option>
+                                </optgroup>
+                            </select>
+                            <small class="form-text text-muted">Choose based on your workload requirements</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dbHours" class="form-label">Hours per Month</label>
+                            <input type="number" class="form-control" id="dbHours" name="dbHours" min="1" max="744" value="730">
+                            <small class="form-text text-muted">730 hours = 1 month of continuous usage</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="storageGB" class="form-label">Storage (GB)</label>
+                            <input type="number" class="form-control" id="storageGB" name="storageGB" min="20" value="20">
+                            <small class="form-text text-muted">$0.115 per GB-month for General Purpose SSD (gp2)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="iops" class="form-label">Provisioned IOPS</label>
+                            <input type="number" class="form-control" id="iops" name="iops" min="0" value="0">
+                            <small class="form-text text-muted">$0.10 per provisioned IOPS-month (only for io1)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="backupStorage" class="form-label">Backup Storage (GB)</label>
+                            <input type="number" class="form-control" id="backupStorage" name="backupStorage" min="0" value="0">
+                            <small class="form-text text-muted">$0.095 per GB-month for backup storage beyond free tier</small>
+                        </div>
+                    </div>
+
+                    <!-- Lambda Options -->
+                    <div id="lambdaOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="memorySize" class="form-label">Memory (MB)</label>
+                            <select class="form-select" id="memorySize" name="memorySize">
+                                <option value="128">128 MB</option>
+                                <option value="256">256 MB</option>
+                                <option value="512">512 MB</option>
+                                <option value="1024">1024 MB</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="executions" class="form-label">Monthly Executions</label>
+                            <input type="number" class="form-control" id="executions" name="executions" min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="avgDuration" class="form-label">Average Duration (ms)</label>
+                            <input type="number" class="form-control" id="avgDuration" name="avgDuration" min="1">
+                        </div>
+                    </div>
+
+                    <!-- DynamoDB Options -->
+                    <div id="dynamodbOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="readCapacity" class="form-label">Provisioned Read Capacity Units</label>
+                            <input type="number" class="form-control" id="readCapacity" name="readCapacity" min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="writeCapacity" class="form-label">Provisioned Write Capacity Units</label>
+                            <input type="number" class="form-control" id="writeCapacity" name="writeCapacity" min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="storageGB" class="form-label">Storage (GB)</label>
+                            <input type="number" class="form-control" id="storageGB" name="storageGB" min="0">
+                        </div>
+                    </div>
+
+                    <!-- ElastiCache Options -->
+                    <div id="elasticacheOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="cacheInstanceType" class="form-label">Node Type</label>
+                            <select class="form-select" id="cacheInstanceType" name="cacheInstanceType">
+                                <optgroup label="Standard">
+                                    <option value="cache.t3.micro">cache.t3.micro (2 vCPU, 0.5 GiB) - $0.017/hr</option>
+                                    <option value="cache.t3.small">cache.t3.small (2 vCPU, 1.37 GiB) - $0.034/hr</option>
+                                    <option value="cache.t3.medium">cache.t3.medium (2 vCPU, 3.09 GiB) - $0.068/hr</option>
+                                </optgroup>
+                                <optgroup label="Memory Optimized">
+                                    <option value="cache.m5.large">cache.m5.large (2 vCPU, 6.38 GiB) - $0.127/hr</option>
+                                    <option value="cache.m5.xlarge">cache.m5.xlarge (4 vCPU, 12.93 GiB) - $0.254/hr</option>
+                                    <option value="cache.m5.2xlarge">cache.m5.2xlarge (8 vCPU, 26.04 GiB) - $0.508/hr</option>
+                                    <option value="cache.m5.4xlarge">cache.m5.4xlarge (16 vCPU, 52.26 GiB) - $1.016/hr</option>
+                                    <option value="cache.m5.12xlarge">cache.m5.12xlarge (48 vCPU, 157.12 GiB) - $3.048/hr</option>
+                                    <option value="cache.m5.24xlarge">cache.m5.24xlarge (96 vCPU, 314.32 GiB) - $6.096/hr</option>
+                                </optgroup>
+                                <optgroup label="Memory Optimized R5">
+                                    <option value="cache.r5.large">cache.r5.large (2 vCPU, 13.07 GiB) - $0.168/hr</option>
+                                    <option value="cache.r5.xlarge">cache.r5.xlarge (4 vCPU, 26.32 GiB) - $0.336/hr</option>
+                                    <option value="cache.r5.2xlarge">cache.r5.2xlarge (8 vCPU, 52.82 GiB) - $0.672/hr</option>
+                                    <option value="cache.r5.4xlarge">cache.r5.4xlarge (16 vCPU, 105.81 GiB) - $1.344/hr</option>
+                                    <option value="cache.r5.12xlarge">cache.r5.12xlarge (48 vCPU, 317.77 GiB) - $4.032/hr</option>
+                                    <option value="cache.r5.24xlarge">cache.r5.24xlarge (96 vCPU, 635.61 GiB) - $8.064/hr</option>
+                                </optgroup>
+                            </select>
+                            <small class="form-text text-muted">Choose based on your memory and performance requirements</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nodes" class="form-label">Number of Nodes</label>
+                            <input type="number" class="form-control" id="nodes" name="nodes" min="1" value="1">
+                            <small class="form-text text-muted">Multiple nodes provide high availability and better performance</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cacheEngine" class="form-label">Cache Engine</label>
+                            <select class="form-select" id="cacheEngine" name="cacheEngine">
+                                <option value="redis">Redis</option>
+                                <option value="memcached">Memcached</option>
+                            </select>
+                            <small class="form-text text-muted">Redis supports more features but Memcached is simpler</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="backupRetention" class="form-label">Backup Retention Period (Days)</label>
+                            <input type="number" class="form-control" id="backupRetention" name="backupRetention" min="0" max="35" value="0">
+                            <small class="form-text text-muted">Redis only. 0-35 days (0 = disabled)</small>
+                        </div>
+                    </div>
+
+                    <!-- API Gateway Options -->
+                    <div id="apigatewayOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="apiRequests" class="form-label">Monthly API Requests (millions)</label>
+                            <input type="number" class="form-control" id="apiRequests" name="apiRequests" min="0" step="0.1">
+                            <small class="form-text text-muted">$1.00 per million requests</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apiDataTransfer" class="form-label">Monthly Data Transfer (GB)</label>
+                            <input type="number" class="form-control" id="apiDataTransfer" name="apiDataTransfer" min="0">
+                            <small class="form-text text-muted">$0.09 per GB</small>
+                        </div>
+                    </div>
+
+                    <!-- Aurora Options -->
+                    <div id="auroraOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="auroraInstance" class="form-label">Instance Type</label>
+                            <select class="form-select" id="auroraInstance" name="auroraInstance">
+                                <optgroup label="Memory Optimized R5">
+                                    <option value="db.r5.large">db.r5.large (2 vCPU, 16 GiB) - $0.29/hr</option>
+                                    <option value="db.r5.xlarge">db.r5.xlarge (4 vCPU, 32 GiB) - $0.58/hr</option>
+                                    <option value="db.r5.2xlarge">db.r5.2xlarge (8 vCPU, 64 GiB) - $1.16/hr</option>
+                                    <option value="db.r5.4xlarge">db.r5.4xlarge (16 vCPU, 128 GiB) - $2.32/hr</option>
+                                    <option value="db.r5.8xlarge">db.r5.8xlarge (32 vCPU, 256 GiB) - $4.64/hr</option>
+                                    <option value="db.r5.12xlarge">db.r5.12xlarge (48 vCPU, 384 GiB) - $6.96/hr</option>
+                                    <option value="db.r5.16xlarge">db.r5.16xlarge (64 vCPU, 512 GiB) - $9.28/hr</option>
+                                    <option value="db.r5.24xlarge">db.r5.24xlarge (96 vCPU, 768 GiB) - $13.92/hr</option>
+                                </optgroup>
+                                <optgroup label="Memory Optimized R6g (Graviton2)">
+                                    <option value="db.r6g.large">db.r6g.large (2 vCPU, 16 GiB) - $0.26/hr</option>
+                                    <option value="db.r6g.xlarge">db.r6g.xlarge (4 vCPU, 32 GiB) - $0.52/hr</option>
+                                    <option value="db.r6g.2xlarge">db.r6g.2xlarge (8 vCPU, 64 GiB) - $1.04/hr</option>
+                                    <option value="db.r6g.4xlarge">db.r6g.4xlarge (16 vCPU, 128 GiB) - $2.08/hr</option>
+                                    <option value="db.r6g.8xlarge">db.r6g.8xlarge (32 vCPU, 256 GiB) - $4.16/hr</option>
+                                    <option value="db.r6g.16xlarge">db.r6g.16xlarge (64 vCPU, 512 GiB) - $8.32/hr</option>
+                                </optgroup>
+                            </select>
+                            <small class="form-text text-muted">Choose based on your workload requirements</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="auroraStorage" class="form-label">Storage (GB)</label>
+                            <input type="number" class="form-control" id="auroraStorage" name="auroraStorage" min="20" value="20">
+                            <small class="form-text text-muted">$0.10 per GB-month</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="auroraIO" class="form-label">Monthly I/O Requests (millions)</label>
+                            <input type="number" class="form-control" id="auroraIO" name="auroraIO" min="0">
+                            <small class="form-text text-muted">$0.20 per million I/O requests</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="auroraBackup" class="form-label">Backup Storage (GB)</label>
+                            <input type="number" class="form-control" id="auroraBackup" name="auroraBackup" min="0" value="0">
+                            <small class="form-text text-muted">$0.021 per GB-month for backup storage beyond free tier</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="auroraSnapshots" class="form-label">Snapshot Export (GB)</label>
+                            <input type="number" class="form-control" id="auroraSnapshots" name="auroraSnapshots" min="0" value="0">
+                            <small class="form-text text-muted">$0.01 per GB for snapshot export to S3</small>
+                        </div>
+                    </div>
+
+                    <!-- CloudFront Options -->
+                    <div id="cloudfrontOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="cfDataTransfer" class="form-label">Monthly Data Transfer (TB)</label>
+                            <input type="number" class="form-control" id="cfDataTransfer" name="cfDataTransfer" min="0" step="0.1">
+                            <small class="form-text text-muted">First 10 TB: $0.085/GB, Next 40 TB: $0.080/GB, Over 50 TB: $0.060/GB</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cfHttpRequests" class="form-label">Monthly HTTP Requests (millions)</label>
+                            <input type="number" class="form-control" id="cfHttpRequests" name="cfHttpRequests" min="0" step="0.1">
+                            <small class="form-text text-muted">$0.0075 per 10,000 HTTP requests</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cfHttpsRequests" class="form-label">Monthly HTTPS Requests (millions)</label>
+                            <input type="number" class="form-control" id="cfHttpsRequests" name="cfHttpsRequests" min="0" step="0.1">
+                            <small class="form-text text-muted">$0.01 per 10,000 HTTPS requests</small>
+                        </div>
+                    </div>
+
+                    <!-- EBS Options -->
+                    <div id="ebsOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="ebsType" class="form-label">Volume Type</label>
+                            <select class="form-select" id="ebsType" name="ebsType">
+                                <optgroup label="SSD Volumes">
+                                    <option value="gp2">General Purpose SSD (gp2) - $0.10/GB-month</option>
+                                    <option value="gp3">General Purpose SSD (gp3) - $0.08/GB-month</option>
+                                    <option value="io1">Provisioned IOPS SSD (io1) - $0.125/GB-month</option>
+                                    <option value="io2">Provisioned IOPS SSD (io2) - $0.125/GB-month</option>
+                                </optgroup>
+                                <optgroup label="HDD Volumes">
+                                    <option value="st1">Throughput Optimized HDD (st1) - $0.045/GB-month</option>
+                                    <option value="sc1">Cold HDD (sc1) - $0.015/GB-month</option>
+                                    <option value="standard">Magnetic (standard) - $0.05/GB-month</option>
+                                </optgroup>
+                            </select>
+                            <small class="form-text text-muted">Choose based on your performance and cost requirements</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ebsSize" class="form-label">Volume Size (GB)</label>
+                            <input type="number" class="form-control" id="ebsSize" name="ebsSize" min="1" value="100">
+                            <small class="form-text text-muted">Minimum size varies by volume type</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ebsIops" class="form-label">Provisioned IOPS</label>
+                            <input type="number" class="form-control" id="ebsIops" name="ebsIops" min="0" value="0">
+                            <small class="form-text text-muted">For io1/io2 volumes: $0.065 per IOPS-month</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ebsThroughput" class="form-label">Additional Throughput (MiBps)</label>
+                            <input type="number" class="form-control" id="ebsThroughput" name="ebsThroughput" min="0" value="0">
+                            <small class="form-text text-muted">For gp3 volumes: $0.040 per MiBps-month over 125 MiBps</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ebsSnapshots" class="form-label">Snapshot Storage (GB)</label>
+                            <input type="number" class="form-control" id="ebsSnapshots" name="ebsSnapshots" min="0" value="0">
+                            <small class="form-text text-muted">$0.05 per GB-month for EBS snapshots</small>
+                        </div>
+                    </div>
+
+                    <!-- ECR Options -->
+                    <div id="ecrOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="ecrStorage" class="form-label">Storage (GB)</label>
+                            <input type="number" class="form-control" id="ecrStorage" name="ecrStorage" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ecrDataTransfer" class="form-label">Monthly Data Transfer Out (GB)</label>
+                            <input type="number" class="form-control" id="ecrDataTransfer" name="ecrDataTransfer" min="0">
+                        </div>
+                    </div>
+
+                    <!-- ECS Options -->
+                    <div id="ecsOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="ecsVCPU" class="form-label">vCPU Hours per Month</label>
+                            <input type="number" class="form-control" id="ecsVCPU" name="ecsVCPU" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ecsMemory" class="form-label">Memory (GB) Hours per Month</label>
+                            <input type="number" class="form-control" id="ecsMemory" name="ecsMemory" min="0">
+                        </div>
+                    </div>
+
+                    <!-- EKS Options -->
+                    <div id="eksOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="eksClusterHours" class="form-label">Cluster Hours</label>
+                            <input type="number" class="form-control" id="eksClusterHours" name="eksClusterHours" min="0" max="744">
+                        </div>
+                        <div class="mb-3">
+                            <label for="eksFargateVCPU" class="form-label">Fargate vCPU Hours</label>
+                            <input type="number" class="form-control" id="eksFargateVCPU" name="eksFargateVCPU" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="eksFargateMemory" class="form-label">Fargate Memory (GB) Hours</label>
+                            <input type="number" class="form-control" id="eksFargateMemory" name="eksFargateMemory" min="0">
+                        </div>
+                    </div>
+
+                    <!-- ELB Options -->
+                    <div id="elbOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="elbType" class="form-label">Load Balancer Type</label>
+                            <select class="form-select" id="elbType" name="elbType">
+                                <option value="application">Application Load Balancer</option>
+                                <option value="network">Network Load Balancer</option>
+                                <option value="classic">Classic Load Balancer</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="elbHours" class="form-label">Hours per Month</label>
+                            <input type="number" class="form-control" id="elbHours" name="elbHours" min="1" max="744">
+                        </div>
+                        <div class="mb-3">
+                            <label for="elbProcessedBytes" class="form-label">Processed Bytes (GB)</label>
+                            <input type="number" class="form-control" id="elbProcessedBytes" name="elbProcessedBytes" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Redshift Options -->
+                    <div id="redshiftOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="redshiftType" class="form-label">Node Type</label>
+                            <select class="form-select" id="redshiftType" name="redshiftType">
+                                <optgroup label="Dense Compute">
+                                    <option value="dc2.large">dc2.large (2 vCPU, 15 GiB, 160 GB SSD) - $0.25/hr</option>
+                                    <option value="dc2.8xlarge">dc2.8xlarge (32 vCPU, 244 GiB, 2.56 TB SSD) - $4.80/hr</option>
+                                </optgroup>
+                                <optgroup label="Dense Storage">
+                                    <option value="ds2.xlarge">ds2.xlarge (4 vCPU, 31 GiB, 2 TB HDD) - $0.85/hr</option>
+                                    <option value="ds2.8xlarge">ds2.8xlarge (36 vCPU, 244 GiB, 16 TB HDD) - $6.80/hr</option>
+                                </optgroup>
+                                <optgroup label="RA3 (Managed Storage)">
+                                    <option value="ra3.xlplus">ra3.xlplus (4 vCPU, 32 GiB) - $0.85/hr</option>
+                                    <option value="ra3.4xlarge">ra3.4xlarge (12 vCPU, 96 GiB) - $3.40/hr</option>
+                                    <option value="ra3.16xlarge">ra3.16xlarge (48 vCPU, 384 GiB) - $13.60/hr</option>
+                                </optgroup>
+                            </select>
+                            <small class="form-text text-muted">Choose based on your compute and storage needs</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="redshiftNodes" class="form-label">Number of Nodes</label>
+                            <input type="number" class="form-control" id="redshiftNodes" name="redshiftNodes" min="1" value="1">
+                            <small class="form-text text-muted">Minimum 1 node, scales with data size and query performance needs</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="redshiftStorage" class="form-label">Storage per Node (GB)</label>
+                            <input type="number" class="form-control" id="redshiftStorage" name="redshiftStorage" min="0" value="0">
+                            <small class="form-text text-muted">$0.024 per GB-month for RA3 managed storage</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="redshiftBackup" class="form-label">Backup Storage (GB)</label>
+                            <input type="number" class="form-control" id="redshiftBackup" name="redshiftBackup" min="0" value="0">
+                            <small class="form-text text-muted">$0.023 per GB-month for backup storage beyond free tier</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="redshiftConcurrency" class="form-label">Concurrency Scaling Hours</label>
+                            <input type="number" class="form-control" id="redshiftConcurrency" name="redshiftConcurrency" min="0" value="0">
+                            <small class="form-text text-muted">Same price as base cluster per hour beyond free tier</small>
+                        </div>
+                    </div>
+
+                    <!-- Route 53 Options -->
+                    <div id="route53Options" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="route53Zones" class="form-label">Number of Hosted Zones</label>
+                            <input type="number" class="form-control" id="route53Zones" name="route53Zones" min="0" value="1">
+                            <small class="form-text text-muted">$0.50 per hosted zone per month</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route53Records" class="form-label">Number of Records</label>
+                            <input type="number" class="form-control" id="route53Records" name="route53Records" min="0" value="0">
+                            <small class="form-text text-muted">First 10,000 records included per hosted zone</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route53Queries" class="form-label">Monthly Queries (millions)</label>
+                            <input type="number" class="form-control" id="route53Queries" name="route53Queries" min="0" step="0.1">
+                            <small class="form-text text-muted">First 1B queries: $0.40 per million, Over 1B: $0.20 per million</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route53HealthChecks" class="form-label">Number of Health Checks</label>
+                            <input type="number" class="form-control" id="route53HealthChecks" name="route53HealthChecks" min="0" value="0">
+                            <small class="form-text text-muted">$0.50 per health check per month</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route53LBRules" class="form-label">Traffic Flow Rules</label>
+                            <input type="number" class="form-control" id="route53LBRules" name="route53LBRules" min="0" value="0">
+                            <small class="form-text text-muted">$50.00 per policy record per month</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route53DNSSECZones" class="form-label">DNSSEC-Enabled Zones</label>
+                            <input type="number" class="form-control" id="route53DNSSECZones" name="route53DNSSECZones" min="0" value="0">
+                            <small class="form-text text-muted">$0.10 per DNSSEC-signed zone per month</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route53ResolverEndpoints" class="form-label">Resolver Endpoints</label>
+                            <input type="number" class="form-control" id="route53ResolverEndpoints" name="route53ResolverEndpoints" min="0" value="0">
+                            <small class="form-text text-muted">$0.10 per resolver endpoint per hour</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route53ResolverQueries" class="form-label">Resolver Queries (millions)</label>
+                            <input type="number" class="form-control" id="route53ResolverQueries" name="route53ResolverQueries" min="0" step="0.1">
+                            <small class="form-text text-muted">$0.40 per million queries</small>
+                        </div>
+                    </div>
+
+                    <!-- SNS Options -->
+                    <div id="snsOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="snsPublishRequests" class="form-label">Monthly Publish Requests (millions)</label>
+                            <input type="number" class="form-control" id="snsPublishRequests" name="snsPublishRequests" min="0" step="0.1">
+                            <small class="form-text text-muted">$0.50 per million requests</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="snsProtocol" class="form-label">Delivery Protocol</label>
+                            <select class="form-select" id="snsProtocol" name="snsProtocol" multiple>
+                                <option value="http">HTTP/HTTPS ($0.60 per million)</option>
+                                <option value="email">Email ($2.00 per 100k)</option>
+                                <option value="sms">SMS (carrier rates apply)</option>
+                                <option value="sqs">SQS (free)</option>
+                                <option value="lambda">Lambda (free)</option>
+                                <option value="application">Mobile Push (free)</option>
+                            </select>
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple protocols</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="snsHttpDeliveries" class="form-label">Monthly HTTP Deliveries (millions)</label>
+                            <input type="number" class="form-control" id="snsHttpDeliveries" name="snsHttpDeliveries" min="0" step="0.1">
+                            <small class="form-text text-muted">$0.60 per million deliveries</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="snsEmailDeliveries" class="form-label">Monthly Email Deliveries (thousands)</label>
+                            <input type="number" class="form-control" id="snsEmailDeliveries" name="snsEmailDeliveries" min="0" step="0.1">
+                            <small class="form-text text-muted">$2.00 per 100,000 deliveries</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="snsSmsDeliveries" class="form-label">Monthly SMS Messages (thousands)</label>
+                            <input type="number" class="form-control" id="snsSmsDeliveries" name="snsSmsDeliveries" min="0" step="0.1">
+                            <small class="form-text text-muted">Carrier-specific rates apply</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="snsDataProcessing" class="form-label">Monthly Data Processing (GB)</label>
+                            <input type="number" class="form-control" id="snsDataProcessing" name="snsDataProcessing" min="0" step="0.1">
+                            <small class="form-text text-muted">First 100GB free, then $0.09 per GB</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="snsFifoTopics" class="form-label">Number of FIFO Topics</label>
+                            <input type="number" class="form-control" id="snsFifoTopics" name="snsFifoTopics" min="0" value="0">
+                            <small class="form-text text-muted">$0.30 per million published messages</small>
+                        </div>
+                    </div>
+
+                    <!-- SQS Options -->
+                    <div id="sqsOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="sqsType" class="form-label">Queue Type</label>
+                            <select class="form-select" id="sqsType" name="sqsType">
+                                <option value="standard">Standard Queue - At least once delivery ($0.40 per million)</option>
+                                <option value="fifo">FIFO Queue - Exactly once delivery ($0.50 per million)</option>
+                            </select>
+                            <small class="form-text text-muted">FIFO queues maintain strict message ordering</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sqsRequests" class="form-label">Monthly Requests (millions)</label>
+                            <input type="number" class="form-control" id="sqsRequests" name="sqsRequests" min="0" step="0.1">
+                            <small class="form-text text-muted">Each 64KB chunk of a message is billed as 1 request</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sqsDataTransfer" class="form-label">Monthly Data Transfer Out (GB)</label>
+                            <input type="number" class="form-control" id="sqsDataTransfer" name="sqsDataTransfer" min="0" step="0.1">
+                            <small class="form-text text-muted">First GB free per month, then standard data transfer rates apply</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sqsLongPolling" class="form-label">Long Polling Requests (millions)</label>
+                            <input type="number" class="form-control" id="sqsLongPolling" name="sqsLongPolling" min="0" step="0.1">
+                            <small class="form-text text-muted">Charged at same rate as standard requests</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sqsMessageRetention" class="form-label">Message Retention Period (days)</label>
+                            <select class="form-select" id="sqsMessageRetention" name="sqsMessageRetention">
+                                <option value="1">1 day</option>
+                                <option value="2">2 days</option>
+                                <option value="3">3 days</option>
+                                <option value="4">4 days</option>
+                                <option value="7">7 days</option>
+                                <option value="14">14 days (maximum)</option>
+                            </select>
+                            <small class="form-text text-muted">No additional cost for message retention</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sqsDelaySeconds" class="form-label">Message Delay Seconds</label>
+                            <input type="number" class="form-control" id="sqsDelaySeconds" name="sqsDelaySeconds" min="0" max="900" value="0">
+                            <small class="form-text text-muted">0-900 seconds (15 minutes maximum)</small>
+                        </div>
+                    </div>
+
+                    <!-- VPC Options -->
+                    <div id="vpcOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="vpcEndpoints" class="form-label">Number of VPC Endpoints</label>
+                            <input type="number" class="form-control" id="vpcEndpoints" name="vpcEndpoints" min="0" value="0">
+                            <small class="form-text text-muted">$0.01 per endpoint per hour</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcEndpointType" class="form-label">Endpoint Type</label>
+                            <select class="form-select" id="vpcEndpointType" name="vpcEndpointType" multiple>
+                                <option value="interface">Interface Endpoints ($0.01/hour)</option>
+                                <option value="gateway">Gateway Endpoints (Free)</option>
+                                <option value="gwlb">Gateway Load Balancer Endpoints ($0.014/hour)</option>
+                            </select>
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple endpoint types</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcNatGateways" class="form-label">Number of NAT Gateways</label>
+                            <input type="number" class="form-control" id="vpcNatGateways" name="vpcNatGateways" min="0" value="0">
+                            <small class="form-text text-muted">$0.045 per NAT Gateway per hour</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcNatDataProcessing" class="form-label">NAT Gateway Data Processing (GB)</label>
+                            <input type="number" class="form-control" id="vpcNatDataProcessing" name="vpcNatDataProcessing" min="0" value="0">
+                            <small class="form-text text-muted">$0.045 per GB processed</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcVpnConnections" class="form-label">Number of VPN Connections</label>
+                            <input type="number" class="form-control" id="vpcVpnConnections" name="vpcVpnConnections" min="0" value="0">
+                            <small class="form-text text-muted">$0.05 per VPN connection per hour</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcTransitGateways" class="form-label">Number of Transit Gateways</label>
+                            <input type="number" class="form-control" id="vpcTransitGateways" name="vpcTransitGateways" min="0" value="0">
+                            <small class="form-text text-muted">$0.05 per Transit Gateway per hour</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcTransitGatewayData" class="form-label">Transit Gateway Data Processing (GB)</label>
+                            <input type="number" class="form-control" id="vpcTransitGatewayData" name="vpcTransitGatewayData" min="0" value="0">
+                            <small class="form-text text-muted">$0.02 per GB processed</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcPeeringConnections" class="form-label">Number of Peering Connections</label>
+                            <input type="number" class="form-control" id="vpcPeeringConnections" name="vpcPeeringConnections" min="0" value="0">
+                            <small class="form-text text-muted">Free within same region, data transfer charges may apply</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vpcFlowLogs" class="form-label">Flow Logs Data (GB)</label>
+                            <input type="number" class="form-control" id="vpcFlowLogs" name="vpcFlowLogs" min="0" value="0">
+                            <small class="form-text text-muted">$0.50 per GB ingested into CloudWatch Logs</small>
+                        </div>
+                    </div>
+
+                    <!-- Elastic Beanstalk Options -->
+                    <div id="elasticbeanstalkOptions" class="service-options d-none">
+                        <div class="mb-3">
+                            <label for="ebEnvironmentType" class="form-label">Environment Type</label>
+                            <select class="form-select" id="ebEnvironmentType" name="ebEnvironmentType">
+                                <option value="web">Web Server Environment</option>
+                                <option value="worker">Worker Environment</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ebInstanceType" class="form-label">Instance Type</label>
+                            <select class="form-select" id="ebInstanceType" name="ebInstanceType">
+                                <option value="t3.micro">t3.micro (2 vCPU, 1 GiB)</option>
+                                <option value="t3.small">t3.small (2 vCPU, 2 GiB)</option>
+                                <option value="t3.medium">t3.medium (2 vCPU, 4 GiB)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ebInstances" class="form-label">Number of Instances</label>
+                            <input type="number" class="form-control" id="ebInstances" name="ebInstances" min="1" value="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ebStorage" class="form-label">Storage per Instance (GB)</label>
+                            <input type="number" class="form-control" id="ebStorage" name="ebStorage" min="10" value="10">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Calculate Cost</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Cost Breakdown</h3>
+            </div>
+            <div class="card-body">
+                <div id="resultSection" class="d-none">
+                    <h4 class="text-center mb-4">Estimated Monthly Cost</h4>
+                    <h2 class="text-center text-primary" id="totalCost">$0.00</h2>
+                    <div class="mt-4">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                    <div class="mt-4">
+                        <h5>Details</h5>
+                        <div id="costDetails" class="table-responsive">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
