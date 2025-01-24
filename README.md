@@ -32,7 +32,7 @@ The **Cloud Cost Calculator** is a web-based tool that helps users estimate the 
 1. Clone the repository:
    ```bash
    git clone https://github.com/Jacobjayk/AWS_Pricing_Calculator.git
-   cd cloud-cost-calculator
+   cd AWS_Pricing_Calculator
    ```
 2. Create and activate a virtual environment:
    ```bash
