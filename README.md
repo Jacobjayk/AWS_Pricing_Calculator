@@ -85,8 +85,6 @@ The **Cloud Cost Calculator** is a web-based tool that helps users estimate the 
 - **Cost Calculation Example:** ![Cost Calculation](https://github.com/user-attachments/assets/4c693b73-bc04-4f1a-a1cc-5649fe48edf2)
 - **Cost Details:** ![Cost Details](https://github.com/user-attachments/assets/f05f429a-809f-40a2-a7b4-6e802c42703f)
 
-> *If the images do not load, ensure the repository has public access or replace the links with direct GitHub-hosted images.*
-
 ## 📝 Future Enhancements
 - Support more AWS services
 - Add multi-region pricing comparisons
