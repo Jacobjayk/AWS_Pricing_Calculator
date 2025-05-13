@@ -1,4 +1,4 @@
-# 🌩️ Cloud Cost Calculator
+# 🌩️ AWS Cost Calculator
 
 ## 📌 Overview
 The **Cloud Cost Calculator** is a web-based tool that helps users estimate the cost of using various AWS services. The calculator supports multiple AWS services like EC2 and S3, allowing users to input usage details and receive an estimated cost based on current AWS pricing.
